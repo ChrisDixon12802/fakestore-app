@@ -3,6 +3,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { useProducts } from "../context/ProductsContext";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Spinner,
+  ButtonGroup,
+  Badge,
+} from "react-bootstrap";
 
 function Products() {
   const [apiProducts, setApiProducts] = useState([]);
@@ -51,96 +61,138 @@ function Products() {
   };
 
   if (loading) {
-    return <div className="loading">Loading products...</div>;
+    return (
+      <Container className="text-center my-5">
+        <Spinner animation="border" role="status" variant="primary">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+        <p className="mt-3">Loading products...</p>
+      </Container>
+    );
   }
 
   return (
-    <div className="products-page">
-      <div className="products-header">
+    <Container className="my-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
         <h1>All Products</h1>
-        <button
-          className="add-product-btn"
-          onClick={() => navigate("/add-product")}
-        >
+        <Button variant="success" onClick={() => navigate("/add-product")}>
           + Add Your Product
-        </button>
+        </Button>
       </div>
 
-      <div className="filter-buttons">
-        <button
-          className={filter === "all" ? "active" : ""}
+      <ButtonGroup className="mb-4 d-flex flex-wrap">
+        <Button
+          variant={filter === "all" ? "primary" : "outline-primary"}
           onClick={() => setFilter("all")}
         >
           All Products
-        </button>
-        <button
-          className={filter === "electronics" ? "active" : ""}
+        </Button>
+        <Button
+          variant={filter === "electronics" ? "primary" : "outline-primary"}
           onClick={() => setFilter("electronics")}
         >
           Electronics
-        </button>
-        <button
-          className={filter === "jewelery" ? "active" : ""}
+        </Button>
+        <Button
+          variant={filter === "jewelery" ? "primary" : "outline-primary"}
           onClick={() => setFilter("jewelery")}
         >
           Jewelry
-        </button>
-        <button
-          className={filter === "men's clothing" ? "active" : ""}
+        </Button>
+        <Button
+          variant={filter === "men's clothing" ? "primary" : "outline-primary"}
           onClick={() => setFilter("men's clothing")}
         >
           Men's Clothing
-        </button>
-        <button
-          className={filter === "women's clothing" ? "active" : ""}
+        </Button>
+        <Button
+          variant={
+            filter === "women's clothing" ? "primary" : "outline-primary"
+          }
           onClick={() => setFilter("women's clothing")}
         >
           Women's Clothing
-        </button>
-      </div>
+        </Button>
+      </ButtonGroup>
 
-      <div className="products-grid">
+      <Row xs={1} sm={2} md={3} lg={4} className="g-4">
         {allProducts.map((product) => (
-          <div
-            key={product.id}
-            className="product-card"
-            onClick={() => navigate(`/product/${product.id}`)}
-          >
-            {product.isCustom && (
-              <span className="custom-badge">Your Product</span>
-            )}
-            <img
-              src={product.image}
-              alt={product.title}
-              className="product-image-real"
-            />
-            <h3>{product.title}</h3>
-            <p className="product-category">{product.category}</p>
-            <div className="product-rating">
-              ⭐ {product.rating.rate} ({product.rating.count} reviews)
-            </div>
-            <p className="product-price">${product.price}</p>
-            <div className="product-actions">
-              <button
-                className="add-to-cart"
-                onClick={(e) => handleAddToCart(e, product)}
-              >
-                Add to Cart
-              </button>
+          <Col key={product.id}>
+            <Card
+              className="h-100 product-card-hover"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`/product/${product.id}`)}
+            >
               {product.isCustom && (
-                <button
-                  className="delete-product-btn"
-                  onClick={(e) => handleDelete(e, product.id)}
-                  title="Delete Product"
+                <Badge
+                  bg="success"
+                  className="position-absolute top-0 end-0 m-2"
                 >
-                  🗑️
-                </button>
+                  Your Product
+                </Badge>
               )}
-            </div>
-          </div>
+              <Card.Img
+                variant="top"
+                src={product.image}
+                alt={product.title}
+                style={{
+                  height: "200px",
+                  objectFit: "contain",
+                  padding: "1rem",
+                  backgroundColor: "#f8f9fa",
+                }}
+              />
+              <Card.Body className="d-flex flex-column">
+                <Card.Title
+                  style={{
+                    fontSize: "0.95rem",
+                    height: "3rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                  }}
+                >
+                  {product.title}
+                </Card.Title>
+                <Card.Text className="text-muted small">
+                  {product.category}
+                </Card.Text>
+                <Card.Text className="small">
+                  ⭐ {product.rating.rate} ({product.rating.count} reviews)
+                </Card.Text>
+                <Card.Text className="fw-bold text-primary fs-5">
+                  ${product.price}
+                </Card.Text>
+                <div className="mt-auto">
+                  <div className="d-flex gap-2">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      className="flex-fill"
+                      onClick={(e) => handleAddToCart(e, product)}
+                    >
+                      Add to Cart
+                    </Button>
+                    {product.isCustom && (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={(e) => handleDelete(e, product.id)}
+                        title="Delete Product"
+                      >
+                        🗑️
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 }
 

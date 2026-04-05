@@ -1,125 +1,160 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Container, Modal, Button, Row, Col, Card } from "react-bootstrap";
 
 function Home() {
   const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+  const navigate = useNavigate();
 
   const handleShopNow = () => {
     setShowWelcomeModal(false);
+    navigate("/products");
   };
 
   return (
     <>
-      {/* Welcome Modal Popup */}
-      {showWelcomeModal && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="modal-close" onClick={handleShopNow}>
-              ✕
-            </button>
-            <h1 className="modal-title">Welcome to NEXORA</h1>
-            <p className="modal-tagline">
-              Your Premium Online Shopping Destination
-            </p>
-            <p className="modal-description">
-              Discover an exclusive collection of quality products curated just
-              for you. From fashion to electronics, find everything you need in
-              one place.
-            </p>
-            <div className="modal-features">
-              <div className="feature">
-                <span className="feature-icon">🚚</span>
-                <span>Free Shipping</span>
+      {/* Welcome Modal */}
+      <Modal
+        show={showWelcomeModal}
+        onHide={() => setShowWelcomeModal(false)}
+        centered
+        size="lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Welcome to NEXORA</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="fs-5 text-center mb-3">
+            Your Premium Online Shopping Destination
+          </p>
+          <p className="text-center mb-4">
+            Discover an exclusive collection of quality products curated just
+            for you. From fashion to electronics, find everything you need in
+            one place.
+          </p>
+          <Row className="text-center">
+            <Col md={4}>
+              <div className="p-3">
+                <span className="fs-1">🚚</span>
+                <p className="mb-0">
+                  <strong>Free Shipping</strong>
+                </p>
+                <small className="text-muted">On orders over $50</small>
               </div>
-              <div className="feature">
-                <span className="feature-icon">✓</span>
-                <span>Secure Checkout</span>
+            </Col>
+            <Col md={4}>
+              <div className="p-3">
+                <span className="fs-1">🔒</span>
+                <p className="mb-0">
+                  <strong>Secure Checkout</strong>
+                </p>
+                <small className="text-muted">100% protected</small>
               </div>
-              <div className="feature">
-                <span className="feature-icon">⭐</span>
-                <span>Top Quality</span>
+            </Col>
+            <Col md={4}>
+              <div className="p-3">
+                <span className="fs-1">⭐</span>
+                <p className="mb-0">
+                  <strong>Top Quality</strong>
+                </p>
+                <small className="text-muted">Premium products</small>
               </div>
-            </div>
-            <Link to="/products">
-              <button className="modal-button" onClick={handleShopNow}>
-                Shop Now
-              </button>
-            </Link>
-          </div>
-        </div>
-      )}
+            </Col>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer className="justify-content-center">
+          <Button variant="primary" size="lg" onClick={handleShopNow}>
+            Shop Now
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-      {/* Categories Section */}
-      <section className="categories-section">
-        <h2>Shop by Category</h2>
-        <div className="categories-grid">
-          <Link to="/categories/mens-clothing" className="category-card">
-            <div className="category-icon">👔</div>
-            <h3>Men's Fashion</h3>
-            <p>Trending styles</p>
-          </Link>
-          <Link to="/categories/womens-clothing" className="category-card">
-            <div className="category-icon">👗</div>
-            <h3>Women's Fashion</h3>
-            <p>Latest collections</p>
-          </Link>
-          <Link to="/categories/jewelery" className="category-card">
-            <div className="category-icon">💎</div>
-            <h3>Jewelry</h3>
-            <p>Elegant pieces</p>
-          </Link>
-          <Link to="/categories/electronics" className="category-card">
-            <div className="category-icon">💻</div>
-            <h3>Electronics</h3>
-            <p>Tech essentials</p>
-          </Link>
+      {/* Main Home Content */}
+      <Container className="my-5">
+        <div className="text-center py-5">
+          <h1 className="display-3 mb-3">Welcome to NEXORA</h1>
+          <p className="lead mb-4">Your Premium Online Shopping Destination</p>
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={() => navigate("/products")}
+          >
+            Browse Products
+          </Button>
         </div>
-      </section>
 
-      {/* Featured Products Section */}
-      <section className="products">
-        <h2>Featured Products</h2>
-        <div className="products-grid">
-          <div className="product-card">
-            <div className="product-image">📦</div>
-            <h3>Product Name</h3>
-            <p className="product-price">$99.99</p>
-            <button className="add-to-cart">Add to Cart</button>
-          </div>
-          <div className="product-card">
-            <div className="product-image">📦</div>
-            <h3>Product Name</h3>
-            <p className="product-price">$149.99</p>
-            <button className="add-to-cart">Add to Cart</button>
-          </div>
-          <div className="product-card">
-            <div className="product-image">📦</div>
-            <h3>Product Name</h3>
-            <p className="product-price">$79.99</p>
-            <button className="add-to-cart">Add to Cart</button>
-          </div>
-          <div className="product-card">
-            <div className="product-image">📦</div>
-            <h3>Product Name</h3>
-            <p className="product-price">$199.99</p>
-            <button className="add-to-cart">Add to Cart</button>
-          </div>
-        </div>
-        <Link to="/products">
-          <button className="offer-button">View All Products</button>
-        </Link>
-      </section>
+        {/* Categories Section */}
+        <h2 className="text-center mb-4 mt-5">Shop by Category</h2>
+        <Row className="g-4 mb-5">
+          <Col md={3} sm={6}>
+            <Card
+              className="text-center h-100 category-card-hover"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/products")}
+            >
+              <Card.Body>
+                <div className="fs-1 mb-3">👔</div>
+                <Card.Title>Men's Fashion</Card.Title>
+                <Card.Text className="text-muted">Trending styles</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={3} sm={6}>
+            <Card
+              className="text-center h-100 category-card-hover"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/products")}
+            >
+              <Card.Body>
+                <div className="fs-1 mb-3">👗</div>
+                <Card.Title>Women's Fashion</Card.Title>
+                <Card.Text className="text-muted">Latest collections</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={3} sm={6}>
+            <Card
+              className="text-center h-100 category-card-hover"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/products")}
+            >
+              <Card.Body>
+                <div className="fs-1 mb-3">💎</div>
+                <Card.Title>Jewelry</Card.Title>
+                <Card.Text className="text-muted">Elegant pieces</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={3} sm={6}>
+            <Card
+              className="text-center h-100 category-card-hover"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/products")}
+            >
+              <Card.Body>
+                <div className="fs-1 mb-3">💻</div>
+                <Card.Title>Electronics</Card.Title>
+                <Card.Text className="text-muted">Tech essentials</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
 
-      {/* Special Offer Section */}
-      <section className="special-offer">
-        <div className="offer-content">
-          <h2>Limited Time Offer!</h2>
-          <p>Get up to 50% off on selected items</p>
-          <Link to="/deals">
-            <button className="offer-button">Shop Deals</button>
-          </Link>
-        </div>
-      </section>
+        {/* Call to Action */}
+        <Card bg="primary" text="white" className="text-center my-5">
+          <Card.Body className="py-5">
+            <h2 className="mb-3">Limited Time Offer!</h2>
+            <p className="fs-5 mb-4">Get up to 50% off on selected items</p>
+            <Button
+              variant="light"
+              size="lg"
+              onClick={() => navigate("/deals")}
+            >
+              Shop Deals
+            </Button>
+          </Card.Body>
+        </Card>
+      </Container>
     </>
   );
 }
